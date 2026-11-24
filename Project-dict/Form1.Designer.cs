@@ -33,6 +33,10 @@
             cmbLanguage = new ComboBox();
             label2 = new Label();
             dgvWords = new DataGridView();
+            Монгол = new DataGridViewTextBoxColumn();
+            Англи = new DataGridViewTextBoxColumn();
+            Орос = new DataGridViewTextBoxColumn();
+            Column4 = new DataGridViewTextBoxColumn();
             dgvSaved = new ListBox();
             txtEng = new TextBox();
             txtMon = new TextBox();
@@ -88,19 +92,50 @@
             // dgvWords
             // 
             dgvWords.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvWords.Location = new Point(37, 95);
+            dgvWords.Columns.AddRange(new DataGridViewColumn[] { Монгол, Англи, Орос, Column4 });
+            dgvWords.Location = new Point(12, 95);
             dgvWords.Name = "dgvWords";
             dgvWords.RowHeadersWidth = 51;
-            dgvWords.Size = new Size(399, 203);
+            dgvWords.Size = new Size(498, 203);
             dgvWords.TabIndex = 4;
+            dgvWords.CellContentClick += dgvWords_CellContentClick;
+            // 
+            // Монгол
+            // 
+            Монгол.HeaderText = "№";
+            Монгол.MinimumWidth = 6;
+            Монгол.Name = "Монгол";
+            Монгол.Width = 125;
+            // 
+            // Англи
+            // 
+            Англи.HeaderText = "Англи";
+            Англи.MinimumWidth = 6;
+            Англи.Name = "Англи";
+            Англи.Width = 125;
+            // 
+            // Орос
+            // 
+            Орос.HeaderText = "Монгол";
+            Орос.MinimumWidth = 6;
+            Орос.Name = "Орос";
+            Орос.Width = 125;
+            // 
+            // Column4
+            // 
+            Column4.HeaderText = "Орос";
+            Column4.MinimumWidth = 6;
+            Column4.Name = "Column4";
+            Column4.Width = 125;
             // 
             // dgvSaved
             // 
             dgvSaved.FormattingEnabled = true;
-            dgvSaved.Location = new Point(463, 95);
+            dgvSaved.Location = new Point(531, 95);
             dgvSaved.Name = "dgvSaved";
-            dgvSaved.Size = new Size(325, 204);
+            dgvSaved.Size = new Size(257, 204);
             dgvSaved.TabIndex = 5;
+            dgvSaved.SelectedIndexChanged += dgvSaved_SelectedIndexChanged;
             // 
             // txtEng
             // 
@@ -219,7 +254,8 @@
             Controls.Add(textBox1);
             Controls.Add(label1);
             Name = "Form1";
-            Text = "Form1";
+            Text = "Толь бичиг";
+            Load += Form1_Load;
             ((System.ComponentModel.ISupportInitialize)dgvWords).EndInit();
             ResumeLayout(false);
             PerformLayout();
@@ -244,5 +280,12 @@
         private Button btnDelete;
         private Button btnClear;
         private Button btnSave;
+        private DataGridViewTextBoxColumn и;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Монгол;
+        private DataGridViewTextBoxColumn Англи;
+        private DataGridViewTextBoxColumn Орос;
     }
 }

@@ -1,7 +1,14 @@
-﻿namespace Project_dict
+﻿using System;
+using System.Data;
+using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+namespace Project_dict
 {
     public partial class Form1 : Form
     {
+        private readonly string savedConnString = $"Data Source={Path.Combine(Application.StartupPath, "dictionary.db") }; Version=3;";
         public Form1()
         {
             InitializeComponent();
@@ -14,6 +21,38 @@
 
             // Програм асах үед анхнаасаа "Бүгд" гэсэн сонголттой харагдах бол:
             cmbLanguage.SelectedIndex = 0;
+        }
+        private void LoadSavedWords()
+        {
+            try
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(savedConnString))
+                {
+                    conn.Open();
+                    string checkTableQuery = "CREATE TABLE IF NOT EXISTS saved_words (id INTEGER PRIMARY KEY AUTOINCREMENT, eng TEXT, mon TEXT, rus TEXT)";
+                    using (SQLiteCommand createCmd = new SQLiteCommand(checkTableQuery, conn))
+                    {
+                        createCmd.ExecuteNonQuery();
+                    }
+
+                    string selectQuery = "SELECT id, eng AS Англи, mon AS Монгол, rus AS Орос FROM saved_words";
+                    using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(selectQuery, conn))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+
+                        // Хэрэв Form дээр dgvSaved нэртэй DataGridView байгаа бол энд холбоно
+                        if (this.Controls.Find("dgvSaved", true).Length > 0 && this.Controls.Find("dgvSaved", true)[0] is DataGridView dgvSaved)
+                        {
+                            dgvSaved.DataSource = dt;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Хадгалсан үгсийг уншихад алдаа гарлаа: " + ex.Message, "Алдаа", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -49,7 +88,7 @@
                     LoadSavedWords();
                     MessageBox.Show("Үг амжилттай санагдлаа!", "Мэдээлэл", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     MessageBox.Show("Алдаа гарлаа: " + ex.Message, "Алдаа", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -61,5 +100,19 @@
 
         }
 
+        private void dgvWords_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgvSaved_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
